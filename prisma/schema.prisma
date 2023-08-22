@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  @@map("users")
+  id                Int       @id @default(autoincrement())
+  
+  username          String   @unique
+  password          String
+  clientname        String
+  active            Boolean
+  
+}
+
+model Billing {
+  @@map("billing")
+ 
+   id        Int @id @default(autoincrement())
+   uuid      Int 
+   balance   Float
+   cur       String
+   credit    String
+}
+
+model Routing {
+  @@map("routing")
+ 
+   id             Int   @id @default(autoincrement())
+   destination    Int
+   rate           String
+   credit         String
+}
+model Sent {
+  @@map("sent")
+ 
+   id             Int   @id @default(autoincrement())
+  deleverd        String
+   
+}
+model Send {
+  @@map("send")
+ 
+   id             Int   @id @default(autoincrement())
+  pending       String
+   
+}
