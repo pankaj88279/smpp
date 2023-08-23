@@ -1,4 +1,5 @@
 "use strict";
+
 const { Service } = require("moleculer");
 const smpp = require("smpp");
 
@@ -7,6 +8,7 @@ const prisma = new PrismaClient();
 
 module.exports = {
     name: "smpp_server",
+
     settings: {
         server: null,
         clientList: []
@@ -75,25 +77,26 @@ module.exports = {
             const user = await prisma.user.findMany(); ({
 
             });
-            return user;
+          
+           return user;
         },
         async checkAsyncUserPass(session, systemId, password, callback) {
-
+          
             const users = await this.getAllUsers();
-
+           
             this.settings.clientList = users.map(row => ({
                 id: row.id,
                 username: row.username,
                 password: row.password,
-                clientName: row.clientName,
+                clientname: row.clientname,
                 active: row.active
             }));
 
-            console.log(this.settings.clientList);
-            var found = false;
+            console.log('data--->',this.settings.clientList);
+               var found = false;
             for (const userObj of this.settings.clientList) {
                 if (userObj.username === systemId && userObj.password === password && userObj.active == 1) {
-                    found = true;
+                   found = true;
                     callback(false);
                     console.log('Username and password matched for user:', userObj.username);
                     break;
@@ -105,16 +108,14 @@ module.exports = {
         },
 
     },
-
     created() {
         this.settings.server = smpp.createServer(
             {
                 debug: true,
             },
-            this.handleSession.bind(this.settings.server)
+            (session) => this.handleSession(session) // Pass only session as an argument
         );
     },
-
     async started() {
         this.settings.server.listen(2775, () => {
             this.logger.info("SMPP server started and listening on port 2775");

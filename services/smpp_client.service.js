@@ -20,21 +20,21 @@ module.exports = {
    */
   actions: {
 
-	  /**
-	   * Say a 'Hello' action.
-	   *
-	   * @returns
-	   */
-	  hello: {
-		  rest: {
-			  method: "GET",
-			  path: "/hello"
-		  },
-		  async handler() {
-			  return "Hello Moleculer";
-		  }
-	  },  
-	 
+    /**
+     * Say a 'Hello' action.
+     *
+     * @returns
+     */
+    hello: {
+      rest: {
+        method: "GET",
+        path: "/hello"
+      },
+      async handler() {
+        return "Hello Moleculer";
+      }
+    },
+
   },
   async started() {
     try {
@@ -74,10 +74,10 @@ module.exports = {
             password: 'admin@123'
           }, (pdu) => {
             if (pdu.command_status === 0) {
-              console.log('Successfully bound');
+              console.log('Successfully bound------->');
               resolve(clientSession);
             } else {
-              console.error('Binding failed. Error code:', pdu.command_status);
+              console.log('Binding failed. Error code:', pdu.command_status);
               clientSession.close();
               reject(new Error('Binding failed'));
             }
@@ -86,7 +86,7 @@ module.exports = {
       });
     },
 
-    async sendSMS() {
+     async sendSMS() {
       try {
         const clientSession = await this.createClientSession();
         clientSession.submit_sm({
@@ -97,6 +97,6 @@ module.exports = {
       } catch (error) {
         console.error('Error while sending SMS:', error);
       }
-    }
+    } 
   }
 };
