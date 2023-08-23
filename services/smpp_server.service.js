@@ -77,7 +77,7 @@ module.exports = {
             });
             return user;
         },
-        async checkAsyncUserPass(session,systemId, password, callback) {
+        async checkAsyncUserPass(session, systemId, password, callback) {
 
             const users = await this.getAllUsers();
 
@@ -97,7 +97,7 @@ module.exports = {
                     callback(false);
                     console.log('Username and password matched for user:', userObj.username);
                     break;
-                } 
+                }
             }
             if (!found) {
                 callback(true); // Validation failed
