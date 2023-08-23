@@ -77,7 +77,7 @@ module.exports = {
             });
             return user;
         },
-        async checkAsyncUserPass( session,systemId, password, callback) {
+        async checkAsyncUserPass(session,systemId, password, callback) {
 
             const users = await this.getAllUsers();
 

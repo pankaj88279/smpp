@@ -70,8 +70,8 @@ module.exports = {
           debug: true
         }, () => {
           clientSession.bind_transceiver({
-            system_id: 'anil',
-            password: 'anil@123'
+            system_id: 'admin',
+            password: 'admin@123'
           }, (pdu) => {
             if (pdu.command_status === 0) {
               console.log('Successfully bound');
