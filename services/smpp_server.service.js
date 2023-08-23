@@ -8,8 +8,8 @@ const prisma = new PrismaClient();
 module.exports = {
     name: "smpp_server",
     settings: {
-        server:null,
-        clientList:[]
+        server: null,
+        clientList: []
     },
 
     dependencies: [],
@@ -46,16 +46,16 @@ module.exports = {
                                     command_status: smpp.ESME_RBINDFAIL,
                                 })
                             );
-                            this.logger.info("SMS Client Disconnected ",session );
+                            this.logger.info("SMS Client Disconnected ", session);
                             session.close();
                         } else {
-                            
+
                             session.send(
                                 pdu.response({
                                     system_id: pdu.system_id,
                                 })
                             );
-                            this.logger.info("SMS Client Connected ",session );
+                            this.logger.info("SMS Client Connected ", session);
                             session.resume();
                         }
                     }
@@ -72,15 +72,15 @@ module.exports = {
         },
 
         async getAllUsers() {
-            const user = await prisma.user.findMany();({
-        
+            const user = await prisma.user.findMany(); ({
+
             });
             return user;
         },
-        async checkAsyncUserPass(systemId, password, callback) {
-            
-            const users  = await this.getAllUsers();
-            
+        async checkAsyncUserPass( session,systemId, password, callback) {
+
+            const users = await this.getAllUsers();
+
             this.settings.clientList = users.map(row => ({
                 id: row.id,
                 username: row.username,
@@ -94,15 +94,14 @@ module.exports = {
             for (const userObj of this.settings.clientList) {
                 if (userObj.username === systemId && userObj.password === password && userObj.active == 1) {
                     found = true;
+                    callback(false);
                     console.log('Username and password matched for user:', userObj.username);
                     break;
-                }
-            } 
-            if (found) {
-                return false; // Validation successful
-            } else {
-                new Error('Invalid credentials'); // Validation failed
-            }   
+                } 
+            }
+            if (!found) {
+                callback(true); // Validation failed
+            }
         },
 
     },
